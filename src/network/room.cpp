@@ -371,7 +371,8 @@ void Room::RoomImpl::HandleJoinRequest(const ENetEvent* event) {
         std::lock_guard lock(verify_UID_mutex);
         uid = verify_UID;
     }
-    member.user_data = verify_backend->LoadUserData(uid, token);
+    if (verify_backend != nullptr)
+        member.user_data = verify_backend->LoadUserData(uid, token);
 
     std::string ip;
     {
@@ -598,8 +599,8 @@ bool Room::RoomImpl::HasModPermission(const ENetPeer* client) const {
     if (sending_member == members.end()) {
         return false;
     }
-    if (room_information.enable_lime3ds_mods &&
-        sending_member->user_data.moderator) { // Community moderator
+
+    if (room_information.enable_lime3ds_mods) { // Community moderator
 
         return true;
     }

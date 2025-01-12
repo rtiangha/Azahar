@@ -24,6 +24,7 @@ import io.github.lime3ds.android.activities.EmulationActivity
 import io.github.lime3ds.android.utils.EmulationMenuSettings
 import io.github.lime3ds.android.utils.FileUtil
 import io.github.lime3ds.android.utils.Log
+import io.github.lime3ds.android.utils.NetPlayManager
 import java.lang.ref.WeakReference
 import java.util.Date
 
@@ -537,6 +538,12 @@ object NativeLibrary {
      * Logs the Lime3DS version, Android version and, CPU.
      */
     external fun logDeviceInfo()
+
+    @Keep
+    @JvmStatic
+    fun addNetPlayMessage(type: Int, message: String) {
+        NetPlayManager.addNetPlayMessage(type, message)
+    }
 
     @Keep
     @JvmStatic

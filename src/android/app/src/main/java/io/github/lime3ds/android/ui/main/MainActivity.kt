@@ -34,12 +34,11 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkManager
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.navigation.NavigationBarView
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import io.github.lime3ds.android.R
-import io.github.lime3ds.android.activities.EmulationActivity
 import io.github.lime3ds.android.contracts.OpenFileResultContract
 import io.github.lime3ds.android.databinding.ActivityMainBinding
+import io.github.lime3ds.android.dialogs.NetPlayDialog
 import io.github.lime3ds.android.features.settings.model.Settings
 import io.github.lime3ds.android.features.settings.model.SettingsViewModel
 import io.github.lime3ds.android.features.settings.ui.SettingsActivity
@@ -54,6 +53,7 @@ import io.github.lime3ds.android.utils.PermissionsHandler
 import io.github.lime3ds.android.utils.ThemeUtil
 import io.github.lime3ds.android.viewmodel.GamesViewModel
 import io.github.lime3ds.android.viewmodel.HomeViewModel
+import io.github.lime3ds.android.utils.NetPlayManager
 
 class MainActivity : AppCompatActivity(), ThemeProvider {
     private lateinit var binding: ActivityMainBinding
@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity(), ThemeProvider {
     private val homeViewModel: HomeViewModel by viewModels()
     private val gamesViewModel: GamesViewModel by viewModels()
     private val settingsViewModel: SettingsViewModel by viewModels()
+
 
     override var themeId: Int = 0
 
@@ -79,6 +80,7 @@ class MainActivity : AppCompatActivity(), ThemeProvider {
         ThemeUtil.ThemeChangeListener(this)
         ThemeUtil.setTheme(this)
         super.onCreate(savedInstanceState)
+
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -168,7 +170,13 @@ class MainActivity : AppCompatActivity(), ThemeProvider {
     }
 
     override fun onDestroy() {
+        NetPlayManager.shutdownNetwork()
         super.onDestroy()
+    }
+
+    fun displayMultiplayerDialog() {
+        val dialog = NetPlayDialog(this)
+        dialog.show()
     }
 
     override fun setTheme(resId: Int) {
