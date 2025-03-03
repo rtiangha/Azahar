@@ -1,4 +1,5 @@
 // Copyright 2014 Citra Emulator Project
+// Copyright 2024 Borked3DS Emulator Project
 // Licensed under GPLv2 or any later version
 // Refer to the license.txt file included.
 
@@ -358,6 +359,9 @@ public:
         return false;
     }
 
+    /// Downcount will be limited to a smaller time slice.
+    void SetDowncountHack(bool enabled, u32 num_cores);
+
     /// Applies any changes to settings to this core instance.
     void ApplySettings();
 
@@ -394,7 +398,7 @@ private:
     std::unique_ptr<AudioCore::DspInterface> dsp_core;
 
     /// When true, signals that a reschedule should happen
-    bool reschedule_pending{};
+    bool reschedule_pending = false;
 
     std::unique_ptr<VideoCore::GPU> gpu;
 
@@ -420,18 +424,18 @@ private:
     /// Image interface
     std::shared_ptr<Frontend::ImageInterface> registered_image_interface;
 
-#ifdef ENABLE_SCRIPTING
-    /// RPC Server for scripting support
-    std::unique_ptr<RPC::Server> rpc_server;
-#endif
-
-    std::unique_ptr<Service::FS::ArchiveManager> archive_manager;
-
     std::unique_ptr<Memory::MemorySystem> memory;
     std::unique_ptr<Kernel::KernelSystem> kernel;
     std::unique_ptr<Timing> timing;
 
     std::unique_ptr<Core::ExclusiveMonitor> exclusive_monitor;
+
+    std::unique_ptr<Service::FS::ArchiveManager> archive_manager;
+
+#ifdef ENABLE_SCRIPTING
+    /// RPC Server for scripting support
+    std::unique_ptr<RPC::Server> rpc_server;
+#endif
 
 private:
     static System s_instance;
