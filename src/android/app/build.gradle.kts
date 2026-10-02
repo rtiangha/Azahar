@@ -29,7 +29,7 @@ android {
     namespace = "org.citra.citra_emu"
 
     compileSdkVersion = "android-35"
-    ndkVersion = "27.3.13750724"
+    ndkVersion = "30.0.16248370"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
